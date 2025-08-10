@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zulu ⇄ Local Time Converter</title>
+  <link rel="stylesheet" href="page.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://apps.7cav.us/" class="site-brand" aria-label="Home">
+      <img class="site-logo"
+           src="https://7cav.us/styles/7cav/xenforo/logo-m.png"
+           alt="7th Cavalry Gaming"
+           loading="eager"
+           decoding="async" />
+    </a>
+  </header>
+
+  <div class="center-wrap">
+    <main class="card" role="main">
+      <h1>Zulu ⇄ Local Time Converter</h1>
+      <p class="sub">
+        Quickly convert <strong>to</strong> or <strong>from</strong> Zulu (UTC+0).
+        Enter time as <span class="mono"><strong>HHMM</strong></span> (e.g. <span class="mono">2345</span>).
+      </p>
+  <br>
+  <br>
+      <div class="row">
+        <div class="field field--auto">
+          <span class="label">Conversion Direction</span>
+          <div class="seg" role="radiogroup" aria-label="Conversion direction">
+            <input type="radio" name="dir" id="toz" value="to" checked>
+            <label for="toz" title="Convert from selected timezone to Zulu">To Zulu</label>
+            <input type="radio" name="dir" id="fromz" value="from">
+            <label for="fromz" title="Convert from Zulu to selected timezone">From Zulu</label>
+          </div>
+        </div>
+
+        <div class="field time-field">
+          <div class="label-row">
+            <label class="label" for="timeInput">Time (HHMM)</label>
+            <button id="nowBtn" type="button" class="mini-btn" title="Input current time">Auto</button>
+          </div>
+          <input id="timeInput" type="search" class="input mono" inputmode="numeric" maxlength="4" placeholder="0000" />
+        </div>
+
+        <div class="field zone-field" id="zoneField">
+          <div class="label-row">
+            <label class="label" for="zoneInput">Zone</label>
+            <button id="autoZoneBtn" type="button" class="mini-btn" title="Set current timezone">Auto</button>
+          </div>
+          <div class="combo">
+            <input id="zoneInput" type="search" class="input" autocomplete="off"
+                   placeholder="Click to search..."
+                   aria-autocomplete="list" aria-expanded="false"
+                   aria-controls="zoneMenu" aria-haspopup="listbox" />
+            <input type="hidden" id="zoneValue" />
+            <div id="zoneMenu" class="combo-menu" role="listbox"></div>
+          </div>
+        </div>
+      </div>
+  <br>
+      <div class="field">
+        <button id="go" class="btn btn--full">Convert</button>
+      </div>
+
+      <div id="msg" class="err" role="alert" aria-live="polite"></div>
+      <div id="out" class="result mono" aria-live="polite" style="display:none"></div>
+  <br>
+  <br>
+      <div class="right mt-10">
+        <button id="clearBtn" type="button" class="mini-btn" title="Reset all fields">Reset</button>
+      </div>
+    </main>
+
+    <p class="hint tip-below">Tip: Specify <em>Standard</em> or <em>Daylight</em> so no date is needed.</p>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025<br> <a href="https://7cav.us">7th Cavalry Gaming Regiment</a><br>All Rights Reserved</p>
+  </footer>
+
+  <script src="page.js"></script>
+</body>
+</html>
