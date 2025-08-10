@@ -27,14 +27,31 @@ body{
   gap:8px;
   width:100%;
 }
-.site-header{
-  width:100%;
-  max-width: min(780px, 94vw);
-  padding:12px;
-  margin: 0 auto;
+.site-header {
+  width: 100%;              /* span full width */
+  max-width: none;          /* remove max-width limit */
+  height: 40px;
+  padding: 4px 8px;
+  margin: 0;                /* no auto-centering */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* align items left */
 }
-.site-brand{display:inline-flex; align-items:center; gap:10px; text-decoration:none}
-.site-logo{height: clamp(28px, 6vw, 56px); width:auto; display:block; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.site-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+}
 
 /* Card */
 .card{
@@ -100,15 +117,33 @@ p.sub{margin:0 0 14px; color:#cbd5e1; font-size:.95rem}
 
 /* Segmented control */
 .seg{
-  display:inline-flex; gap:6px; background:#111111; border:1px solid rgba(148,163,184,.28);
-  border-radius:10px; align-items:center; padding:4px 6px; height:auto; white-space:nowrap;
+  display:flex;                 /* was inline-flex */
+  gap:6px;                      /* space only between pills */
+  background:#111111;
+  border:1px solid rgba(148,163,184,.28);
+  border-radius:10px;
+  align-items:center;
+  padding:4px;                  /* was 4px 6px → even edges */
+  height:auto;
+  white-space:nowrap;
+  overflow:hidden;              /* clip any glow/border bleed */
 }
-.seg input[type="radio"]{position:absolute; opacity:0; width:0; height:0; pointer-events:none;}
+.seg input[type="radio"]{
+  position:absolute; opacity:0; width:0; height:0; pointer-events:none;
+}
 .seg label{
   display:flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:8px; cursor:pointer; color:#cbd5e1; user-select:none;
-  min-width:90px; box-sizing:border-box; border:1px solid transparent;
+  padding:4px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  color:#cbd5e1;
+  user-select:none;
+  box-sizing:border-box;
+  border:1px solid transparent;
+  flex:1 1 0;                   /* make both pills equal width */
+  min-width:0;                  /* allow shrinking evenly */
 }
+
 .seg input[type="radio"]:checked + label{
   background: linear-gradient(180deg, rgba(255,204,0,.18), rgba(255,204,0,.08));
   color: var(--accent);
@@ -222,4 +257,11 @@ a:active { color: #bbbbbb; text-decoration: underline; }
 
   .tip-below{ margin-top: 8px; text-align: left; }
   .site-header{ padding: 10px 12px; }
+}
+#out {
+  width: 100%;
+}
+
+#out .out-12 {
+  color: var(--muted);
 }

@@ -251,38 +251,63 @@
       if(delta === 0) return '';
       return delta > 0 ? ` (+${delta} day${delta>1?'s':''})` : ` (${delta} day${delta<-1?'s':''})`;
     }
+    // 12-hour formatter (no day deltas here)
+    function to12h(hhmm){
+      if (!/^\d{4}$/.test(hhmm)) return hhmm;
+      let h = parseInt(hhmm.slice(0,2), 10);
+      const m = hhmm.slice(2);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = (h % 12) || 12;
+      return `${h}:${m}${ampm}`;
+    }
 
     // ------- Convert -------
     function convert(){
       msg.textContent = '';
       out.style.display = 'none';
       out.textContent = '';
-
+    
       const mins = parseHHMM(timeInput.value);
       if(mins === null){ msg.textContent = 'Enter time as HHMM between 0000 and 2359.'; return; }
-
+    
       const raw = zoneValue.value;
       if(!raw){ msg.textContent = 'Please choose a zone from the list.'; return; }
-
+    
       const [offStr, abbr] = raw.split('|');
       const offsetMin = Number(offStr);
       const dir = dirRadios.find(r=>r.checked)?.value || 'to';
-
+    
       let localMins, zuluMins;
       if (dir === 'to') { localMins = mins; zuluMins = mins - offsetMin; }
       else { zuluMins = mins; localMins = mins + offsetMin; }
-
+    
       const localStr = fmtMinutes(localMins);
       const zuluStr  = fmtMinutes(zuluMins);
-
+    
       const localDayDelta = Math.floor(localMins/1440) - Math.floor(((dir==='to')? mins: zuluMins)/1440);
       const zuluDayDelta  = Math.floor(zuluMins/1440)  - Math.floor(((dir==='to')? localMins: mins)/1440);
-
+    
       const localPart = `${localStr} ${abbr}${dayDeltaStr(localDayDelta)}`;
       const zuluPart  = `${zuluStr} ZULU${dayDeltaStr(zuluDayDelta)}`;
-
-      out.textContent = `${localPart}  /  ${zuluPart}`;
-      out.style.display = 'block';
+    
+      function to12Hour(hhmm){
+        let h = parseInt(hhmm.slice(0,2),10);
+        const m = hhmm.slice(2);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return `${h}:${m}${ampm}`;
+      }
+    
+      const local12 = `${to12Hour(localStr)} ${abbr}${dayDeltaStr(localDayDelta)}`;
+      const zulu12  = `${to12Hour(zuluStr)} ZULU${dayDeltaStr(zuluDayDelta)}`;
+    
+      // Wrap each part in spans for alignment
+      out.innerHTML = `
+        <span class="out-24">${localPart} / ${zuluPart}</span>
+        <span class="out-12">${local12} / ${zulu12}</span>
+      `;
+      out.style.display = 'flex';
+      out.style.justifyContent = 'space-between';
     }
 
     // ------- Buttons -------
@@ -307,7 +332,7 @@
       zoneInput.value = '';
       zoneValue.value = '';
       closeMenu();
-      document.getElementById('toz').checked = true;
+      document.getElementById('fromz').checked = true;
       msg.textContent = '';
       out.textContent = '';
       out.style.display = 'none';
